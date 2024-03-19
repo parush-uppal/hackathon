@@ -20,8 +20,14 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    attributes: {
-        type: [String],
+    color: {
+        type: String,
+    },
+    category:{
+        type:String
+    },
+    style:{
+        type:String
     },
     image:{
         type:[String]

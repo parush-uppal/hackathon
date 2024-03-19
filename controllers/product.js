@@ -1,4 +1,3 @@
-const product = require('../models/product');
 const Product = require('../models/product')
 const cloudinary = require('cloudinary').v2;
 const ExcelJS = require('exceljs');
@@ -10,7 +9,7 @@ cloudinary.config({
 });
 
 exports.create = async (req, res) => {
-    const { name, description, price,discount,attributes,image } = req.body
+    const { name, description, price,discount,attributes,image,color,category,style } = req.body
     const uploadedImages = [];
     if(image){
         try {
@@ -32,7 +31,7 @@ exports.create = async (req, res) => {
             throw error;
           }
     }
-    const newProduct = new Product({ name,description, price,discount,attributes,image:uploadedImages});
+    const newProduct = new Product({ name,description, price,discount,attributes,image:uploadedImages,color,category,style});
     await newProduct.save()
     res.json({
         product: newProduct,
@@ -84,7 +83,7 @@ exports.excel = async (req, res) => {
     const worksheet = workbook.addWorksheet('Products');
 
     // Define headers
-    const headers = ['name','description','price','attributes','discount'];
+    const headers = ['name','description','price','attributes','discount','color','category','style'];
     worksheet.addRow(headers);
 
     // Add data to worksheet
@@ -94,7 +93,10 @@ exports.excel = async (req, res) => {
         product.description,
         product.price,
         product.attributes,
-        product.discount
+        product.discount,
+        product.color,
+        product.style,
+        product.description
       ];
       worksheet.addRow(rowData);
     });
